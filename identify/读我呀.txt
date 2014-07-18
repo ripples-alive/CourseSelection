@@ -1,0 +1,20 @@
+文件夹里的东西都是必须的。。。（啊喂东西有点多啊）
+
+先调用final.exe
+//提出特征，然后降低维数输出 
+//其中kmeans_output不能删，是存的中间变量
+输入的是图片的地址 比如 C：\\1.bmp
+输出的是ask.txt
+
+再调用svm-predict.exe
+//读入降维以后的特征，输出预测
+cmd中使用格式为 svm-predict [import] model [output]
+例如：svm-predict ask.txt final.model output.txt
+//model是我用3200个训练好参数调好的模型
+最后输出output.txt为4行ASC码，就是预测结果
+
+样例
+final
+1.bmp
+svm-predict ask.txt final.model output.txt
+完了

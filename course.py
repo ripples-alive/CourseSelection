@@ -4,6 +4,7 @@
 import re
 
 from web import Web
+from identify import get_code
 
 
 class CourseConnect:
@@ -21,10 +22,7 @@ class CourseConnect:
 
         # Get identify code for login.
         content = self.__connect.open(self.__baseUrl + 'image.do')
-        img_file = open('identify.jpg', 'w')
-        img_file.write(content)
-        img_file.close()
-        identify_code = raw_input('请输入验证码：')
+        identify_code = get_code(content)
 
         data = {'studentId': self.__username, 'password': self.__password,
                 'rand': identify_code, 'Submit2': '提交'}
@@ -41,10 +39,7 @@ class CourseConnect:
         # Get identify code for selecting course.
         data = {'token': token}
         content = self.__connect.open(self.__baseUrl + 'image.do', data, 'GET')
-        img_file = open('identify.jpg', 'w')
-        img_file.write(content)
-        img_file.close()
-        identify_code = raw_input('请输入验证码：')
+        identify_code = get_code(content)
 
         # Select course and get the result of selection.
         data = {'token': token, 'selectionId': course_id,
