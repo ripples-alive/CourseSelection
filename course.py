@@ -8,7 +8,7 @@ from web import Web
 
 def get_code(picture):
     """Get the code in the picture."""
-    img_file = open('identify.jpg', 'w')
+    img_file = open('identify.jpg', 'wb')
     img_file.write(picture)
     img_file.close()
     return raw_input('请输入验证码：')
