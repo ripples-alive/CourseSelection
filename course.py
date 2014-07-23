@@ -2,8 +2,9 @@
 #encoding:utf-8
 
 import re
+import ConfigParser
 
-from web import Web
+from web_factory import WebFactory
 
 
 def get_code(picture):
@@ -17,7 +18,16 @@ def get_code(picture):
 class CourseConnect:
     def __init__(self, username, password):
         """Initialize with specific username and password."""
-        self.__connect = Web()
+        config = ConfigParser.ConfigParser()
+        try:
+            config.read('config.ini')
+            web_cls_type = config.get('Web', 'class type')
+        except Exception, error:
+            print(error)
+            print('Use UrllibWeb as default web class.')
+            web_cls_type = 'urllib'
+
+        self.__connect = WebFactory.create_web(web_cls_type)
         self.__baseUrl = 'http://xk.fudan.edu.cn/xk/'
 
         self.__login(username, password)

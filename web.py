@@ -1,31 +1,43 @@
 #!/usr/bin/env python
-#encoding:utf-8
+# encoding:utf-8
+__author__ = 'Jayvic'
+__date__ = '14-7-20'
 
 import urllib
 import urllib2
 import cookielib
 
 
-class Web:
-    """Class to open URLs with cookies."""
-    def __init__(self):
-        try:
-            cj = cookielib.CookieJar()
-            self.__opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-            self.__opener.addheaders = [('User-agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)')]
-
-        except Exception, e:
-            print(e)
+class Web(object):
+    """Abstract class to open URLs with cookie."""
 
     def open(self, url, data=None, method='POST'):
-        """Return string for the specified URL."""
+        """Return string from the specified URL."""
+
+
+class UrllibWeb(Web):
+    """Class to open URLs with cookie by urllib2."""
+    def __init__(self):
+        """Init opener with cookie processor."""
         try:
-            if method == 'POST':
+            cj = cookielib.CookieJar()
+            self._opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+            self._opener.addheaders = [('User-Agent',
+                                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36 QQBrowser/2.4.2181.400')]
+        except Exception, error:
+            print(error)
+
+    def open(self, url, data=None, method='POST'):
+        """Return string from the specified URL."""
+        try:
+            if method.upper() == 'POST':
                 if data is None:
-                    return self.__opener.open(url).read()
+                    return self._opener.open(url).read()
                 else:
-                    return self.__opener.open(url, urllib.urlencode(data)).read()
-            elif method == 'GET':
-                return self.__opener.open(url + '?' + urllib.urlencode(data)).read()
-        except Exception, e:
-            print(e)
+                    return self._opener.open(url, urllib.urlencode(data)).read()
+            elif method.upper() == 'GET':
+                return self._opener.open(url + '?' + urllib.urlencode(data)).read()
+            else:
+                raise ValueError('No such method named %s' % method)
+        except Exception, error:
+            print(error)
